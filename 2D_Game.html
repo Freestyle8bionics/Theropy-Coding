@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Simple 2D Game</title>
+  <style>
+    canvas {
+      border: 1px solid black;
+      display: block;
+      margin: 0 auto;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="gameCanvas" width="960" height="600"></canvas>
+
+  <script>
+// Get the canvas element and its 2D context
+var canvas = document.getElementById("gameCanvas");
+var ctx = canvas.getContext("2d");
+
+// Define player properties
+var player = {
+    x: 50,
+    y: canvas.height - 50,
+    width: 50,
+    height: 50,
+    speed: 5,
+    jumpStrength: 100,
+    isJumping: false
+};
+
+// Function to draw the player
+function drawPlayer() {
+    ctx.fillStyle = "blue";
+    ctx.fillRect(player.x, player.y, player.width, player.height);
+}
+
+// Function to handle player movement
+function movePlayer() {
+    // Move left
+    if (keys[37]) {
+        player.x -= player.speed;
+    }
+    // Move right
+    if (keys[39]) {
+        player.x += player.speed;
+    }
+    // Jump
+    if (keys[38] && !player.isJumping) {
+        player.isJumping = true;
+        player.y -= player.jumpStrength;
+    }
+
+    // Gravity
+    if (player.y < canvas.height - player.height) {
+        player.y += 2; // Gravity strength
+    } else {
+        player.isJumping = false;
+    }
+}
+
+// Function to clear the canvas
+function clearCanvas() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+}
+
+// Main game loop
+function gameLoop() {
+    clearCanvas();
+    movePlayer();
+    drawPlayer();
+    requestAnimationFrame(gameLoop);
+}
+
+// Listen for keydown and keyup events
+var keys = {};
+window.addEventListener("keydown", function(event) {
+    keys[event.keyCode] = true;
+});
+window.addEventListener("keyup", function(event) {
+    delete keys[event.keyCode];
+});
+
+// Start the game loop
+gameLoop();
+
+</script>
+<a src="Freestyle Bionics Games.html">Back</a>
+</body>
+</html>

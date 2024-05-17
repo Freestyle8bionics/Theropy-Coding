@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Activity Logger</title>
+</head>
+<body>
+  <h2>Activity Logger</h2>
+  
+  <form id="activityForm">
+    <label for="activityInput">Enter Activity:</label><br>
+    <input type="text" id="activityInput" name="activity" required><br><br>
+    <button type="submit">Log Activity</button>
+  </form>
+
+  <script>
+    document.getElementById('activityForm').addEventListener('submit', function(event) {
+      event.preventDefault();
+      
+      const activity = document.getElementById('activityInput').value;
+      
+      google.script.run
+        .withSuccessHandler(function(response) {
+          alert(response);
+          document.getElementById('activityInput').value = ''; // Clear input field after submission
+        })
+        .withFailureHandler(function(error) {
+          alert('Error logging activity: ' + error.message);
+        })
+        .logActivity({ activity: activity }); // Call logActivity function in Google Apps Script
+    });
+  </script>
+
+  <script src="https://apis.google.com/js/api.js"></script>
+  <script>
+    function init() {
+      google.script.run.withSuccessHandler(function() {
+        console.log('Google Apps Script API loaded successfully.');
+      }).withFailureHandler(function(error) {
+        alert('Error loading Google Apps Script API: ' + error.message);
+      }).init(); // Call init function in Google Apps Script to ensure API is loaded
+    }
+    google.setOnLoadCallback(init);
+  </script>
+</body>
+</html>
